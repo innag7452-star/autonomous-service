@@ -25,3 +25,5 @@ python run_simulation.py --scenario test_scenario_01.json
 docker build -t my-autonomous-service:local .
 docker run --rm my-autonomous-service:local
 ```
+
+Lab 9 - author: I. Holovach
