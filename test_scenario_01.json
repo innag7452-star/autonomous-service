@@ -1,7 +1,7 @@
 {
   "name": "altitude_step_with_gust",
   "plant": {"mass": 1.2, "drag": 1.5, "motor_tau": 0.05, "max_thrust": 30.0},
-  "controller": {"kp": 14.37, "ki": 9.58, "kd": 5.68},
+  "controller": {"kp": 1.0, "ki": 0.5, "kd": 0.1},
   "setpoint": {"step_time": 1.0, "value": 3.0},
   "disturbance": {"time": 20.0, "force": -3.0},
   "duration": 30.0,
