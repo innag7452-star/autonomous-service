@@ -1,0 +1,46 @@
+name: CI Pipeline
+
+on:
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:        # можна запустити вручну на вкладці Actions
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: Run unit tests
+      run: |
+        pytest tests/ -v
+
+    - name: Run simulation scenario
+      run: |
+        python run_simulation.py --scenario test_scenario_01.json --output result.json
+
+    - name: Upload simulation result
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: simulation-result
+        path: result.json
+
+    - name: Build Docker image
+      run: |
+        docker build -t my-autonomous-service:pr-${{ github.event.pull_request.number || 'manual' }} .
+
+    - name: Run simulation inside the container
+      run: |
+        docker run --rm my-autonomous-service:pr-${{ github.event.pull_request.number || 'manual' }}
